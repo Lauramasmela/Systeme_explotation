@@ -13,8 +13,26 @@ void traitementDesTables(int m1, int m2)
 }
 
 int main(){
-  int ponctuation;
-  pontuation = 0;
 
+  int ponctuation = 0;
+
+  struct sigaction action;
+  action.sa_handler = sortie;
+  action.sa_flags = 0;
+  sigemptyset(&action.sa_mask);
+  sigaction(SIGINT, &action, NULL);
+  sigaction(SIGQUIT, &action, NULL);
+  sigaction(SIGTERM, &action, NULL);
+
+  srand(time(NULL)) // pour initialiser rand()
+
+  while(1){
+    struct sigaction action;
+    action.sa_handler = handler;
+
+    pause(5);
+    return 0;
+
+  }
 
 }
