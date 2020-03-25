@@ -2,15 +2,23 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <signal.h>
+//opérandes au hasard ->rand()
+//  ->initialiser avec srand(time(NULL))
+//pour sortir du programme CTRL-C
+// CTRL-C provoquera l'affichage du score obtenu
+//le programme s'arrête si + de 5 secondes à repondre
+//privilegier variables globales
+//compilation avec option -ansi
+/************************/
+//définir fonction sortie() -> elle affichera le score obtenu
+//  ->mettra fin au programme.
+// fonction: signal() autant que la fonction sigaction().
+// scanf()
+// fonctions: setjmp():
 
 
 
-void traitementDesTables(int m1, int m2)
-{
-  m1= rand();
-  m2= rand();
-  printf("Quelle est la valeur de %d fois %d? ", m1, m2);
-}
+
 
 int main(){
 
