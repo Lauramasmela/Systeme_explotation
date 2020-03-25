@@ -37,3 +37,12 @@ function power(n, x){
   }
   return x;
 }
+
+function recursifPower(n, x){
+
+  if(n != 1 ){
+    return x*recursifPower(n-1, x);
+  }else{
+    return x;
+  }
+}
