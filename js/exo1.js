@@ -28,3 +28,12 @@ function numbers(i){
     console.log(i);
   }
 }
+
+function power(n, x){
+
+  for(n=1; n<=5; n++){
+    x*=x;
+    console.log(x);
+  }
+  return x;
+}
