@@ -19,12 +19,29 @@ console.log(multip(5));
 // de la séquence demarrane à init et incrementes
 // de step.
 function creerSequence(init, step){
-
     return () => (init += step++);
 }
-
 let s= creerSequence(2, 1);
-
-
 console.log(s());
 console.log("on ajoute" + s());
+
+//3. fonction qui permet de parcourir la
+//suite de fibonacci. Reçoit 2
+//arguments qui sont les 2 valeurs initiales de la
+//suite, et retourne une fonction qui, à chaque
+//appel, délivre les valeurs successives de la suite.
+// (rappel : la suite de fibonacci est la suite
+//un=un-1+un-2),
+
+function suiteFibonacci(i, i2){
+  if(i>0 && i2==i+1){
+    return()=>(i+i2);
+  }
+
+}
+let suiv=suiteFibonacci(5,6);
+console.log(suiv());
+
+//4. modig
+
+//function creerMultplicateur()
