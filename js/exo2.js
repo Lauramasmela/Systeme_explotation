@@ -35,13 +35,25 @@ console.log("on ajoute" + s());
 
 function suiteFibonacci(i, i2){
   if(i>0 && i2==i+1){
-    return()=>(i+i2);
+    return()=>((i-1)+(i2-2));
   }
-
 }
 let suiv=suiteFibonacci(5,6);
 console.log(suiv());
 
-//4. modig
+//4. modifier function creerMultplicateur()
 
-//function creerMultplicateur()
+function modifCreerMultiplicateur(n, x){
+
+  if(arguments.length==2){
+    console.log("deux arguments");
+    return()=>(x*n);
+
+  }else if(arguments.length==1){
+    console.log("un seul argument");
+    return(x)=>(x*n);
+
+  }
+}
+let modifCM= modifCreerMultiplicateur(6);
+console.log(modifCM(3));
