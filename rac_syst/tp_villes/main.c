@@ -9,7 +9,6 @@ int main ()
 {
     Liste l;
     char f[18];
-    char postal[CODE_TAILLE_MAX];
 
     /* initialisation */
     l = ville_liste_initialiser();
@@ -19,8 +18,7 @@ int main ()
     l = ville_lire_fichier(l, f);
 
     /* recherche et affichage */
-    strcpy(postal, "54");
-    ville_liste_rechercher(l, postal);
+    ville_liste_rechercher(l);
 
     /* liberation */
     l = ville_liste_liberer(l);

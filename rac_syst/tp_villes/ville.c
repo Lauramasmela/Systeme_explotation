@@ -12,7 +12,7 @@
 
 /*FONCTIONS DE LISTE*/
 
-/* Fonction de lecture de fichier et de stockage dans la structure définie */
+/* Fonction de lecture de fichier et de stockage dans la structure dï¿½finie */
 Liste ville_lire_fichier(Liste tete, char* fichier)
 {
     FILE * fv = fopen(fichier, "r");
@@ -24,36 +24,116 @@ Liste ville_lire_fichier(Liste tete, char* fichier)
         printf("Fichier introuvable");
         return 0;
     }
-    while (fscanf(fv,"%s %s", nom, postal)==1){
-        tete = ville_liste_queueinserer(tete, nom, postal);
+
+    while (fscanf(fv,"%s\t%s\n", nom, postal)==2){
+        tete = ville_liste_teteinserer(tete, nom, postal);
     }
+
 
     fclose(fv);
     return tete;
 }
 
-/* PROBLEME : COMMENT CHERCHER QUE SUR LES DEUX PREMIERS CHIFFRES DES CODES POSTAUX ???? */
-
-/* Afficher tous les noms de ville partageant un même code postal */
+/* Afficher tous les noms de ville partageant un mï¿½me code postal */
 /* affiche: code postal + chaque ville par ligne */
-void ville_liste_rechercher(Liste tete, char* c)
+void ville_liste_rechercher(Liste tete)
 {
     Liste lCourant;
 
+
     if(tete==NULL)
-		printf("Pas de villes !");
+		printf("Pas de villes !\n");
 
     /* variables de fonction */
-    lCourant = tete;
+    ville_liste_trier(tete);
 
-    printf("%s\n", c);
-    /* Recherche */
-    while(lCourant!=NULL){
-        if(strstr(lCourant->code, c)!=NULL){
+    lCourant=tete;
+
+    /* Recherche et affichage des villes de mï¿½me code */
+    while(lCourant != NULL){
+        while(lCourant->suc != NULL) {
+            if(strcmp(lCourant->code,lCourant->suc->code)==0){
+                printf("%s\n", lCourant->code);
+                printf("%s\n", lCourant->ville);
+                while( (strcmp(lCourant->code,lCourant->suc->code)==0)
+                            && lCourant->suc->suc!=NULL){
+                    printf("%s\n", lCourant->suc->ville);
+                    lCourant = lCourant->suc;
+                }
+                if(lCourant->suc->suc==NULL){
+                    if(strcmp(lCourant->code,lCourant->suc->code)==0){
+                        printf("%s\n", lCourant->suc->ville);
+                    }
+                    else{
+                        printf("%s\n", lCourant->suc->code);
+                        printf("%s\n", lCourant->suc->ville);
+                    }
+                }
+            }
+            lCourant=lCourant->suc;
+        }
+    }
+
+    /*
+    while(lCourant->suc!=NULL){
+        if(strcmp(lCourant->code,lCourant->suc->code)==0){
+            printf("%s\n", lCourant->code);
             printf("%s\n", lCourant->ville);
+            while(strcmp(lCourant->code,lCourant->suc->code)==0){
+                printf("%s\n", lCourant->suc->ville);
+                lCourant = lCourant->suc;
+            }
         }
         lCourant = lCourant->suc;
     }
+    */
+}
+
+
+
+/* Trie la liste selon les codes pour faciliter la recherche */
+void ville_liste_trier(Liste tete)
+{
+    int pasfini;
+    Liste ltemp1;
+    Liste ltemp2 = NULL;
+
+    if (tete == NULL) {
+        printf("Liste de villes vide !");
+        exit(1);
+    }
+
+    do
+    {
+        pasfini = 0;
+        ltemp1 = tete;
+
+        while (ltemp1->suc != ltemp2)
+        {
+            if (strcmp(ltemp1->code, ltemp1->suc->code)>0)
+            {
+                ville_liste_swap(ltemp1, ltemp1->suc);
+                pasfini = 1;
+            }
+            ltemp1 = ltemp1->suc;
+        }
+        ltemp2 = ltemp1;
+    }
+    while (pasfini);
+}
+
+
+/* Echange deux cellules */
+void ville_liste_swap(Liste a, Liste b)
+{
+    char tempville[VILLE_TAILLE_MAX];
+    char tempcode[CODE_TAILLE_MAX];
+    strcpy(tempville, a->ville);
+    strcpy(tempcode, a->code);
+    strcpy(a->ville, b->ville);
+    strcpy(a->code, b->code);
+    strcpy(b->ville, tempville);
+    strcpy(b->code, tempcode);
 }
 
 /* Initialise la liste */
@@ -62,18 +142,18 @@ Liste ville_liste_initialiser()
   return(NULL);
 }
 
-/* Vérifie si liste vide */
+/* Vï¿½rifie si liste vide */
 int ville_liste_vide(Liste tete)
 {
   return (tete == NULL);
 }
 
 /* Inserer en queue pour garder l'ordre de la liste, comme une pile */
-Liste ville_liste_queueinserer(Liste tete, char v[], char c[])
+Liste ville_liste_queueinserer(Liste tete, char* v, char* c)
 {
     Liste lCourante=NULL;
-    /*allocation mémoire de la case queue*/
-    Liste q = (Liste) malloc(sizeof(TypeCellule));
+    /*allocation mï¿½moire de la case queue*/
+    Liste q = (Liste)malloc(sizeof(TypeCellule));
 
     /*si liste vide, on insere en queue = inserer en tete !*/
     if(!tete)
@@ -84,26 +164,26 @@ Liste ville_liste_queueinserer(Liste tete, char v[], char c[])
         exit(1);
     }
 
-    /*dans tous les cas, case créée avec valeur et pas de suivant*/
+    /*dans tous les cas, case crï¿½ï¿½e avec valeur et pas de suivant*/
     strcpy(q->ville, v);
     strcpy(q->code, c);
     q->suc = NULL;
 
     lCourante = tete;
 
-    /*recherche du dernier élt courant*/
+    /*recherche du dernier ï¿½lt courant*/
     while (lCourante->suc != NULL) {
         lCourante = lCourante->suc;
     }
-    /*MAJ chainage: l'avant-dernier élt pointe mtnt vers le dernier*/
+    /*MAJ chainage: l'avant-dernier ï¿½lt pointe mtnt vers le dernier*/
     lCourante->suc = q;
     return tete;
 }
 
-/* Ajout d'un élément en tête de liste */
-Liste ville_liste_teteinserer(Liste tete, char v[], char c[])
+/* Ajout d'un ï¿½lï¿½ment en tï¿½te de liste */
+Liste ville_liste_teteinserer(Liste tete, char* v, char* c)
 {
-    Liste t = (Liste) malloc(sizeof(TypeCellule));
+    Liste t = (Liste)malloc(sizeof(TypeCellule));
     if (t == NULL) {
         printf("Allocation impossible...\n");
         exit(1);
@@ -116,7 +196,7 @@ Liste ville_liste_teteinserer(Liste tete, char v[], char c[])
 }
 
 
-/* Suppression d'un élément en tête de liste */
+/* Suppression d'un ï¿½lï¿½ment en tï¿½te de liste */
 Liste ville_liste_tetesupprimer(Liste tete)
 {
     Liste t = NULL;

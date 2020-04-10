@@ -22,7 +22,13 @@ typedef struct Cellule *Liste;
 Liste ville_lire_fichier(Liste tete, char* fichier);
 
 /* Afficher tous les noms de ville partageant un même code postal */
-void ville_liste_rechercher(Liste tete, char* c);
+void ville_liste_rechercher(Liste tete);
+
+/* Trie la liste selon les codes pour faciliter la recherche */
+void ville_liste_trier(Liste tete);
+
+/* Echange deux cellules */
+void ville_liste_swap(Liste a, Liste b);
 
 /* Initialise la liste */
 Liste ville_liste_initialiser();
@@ -31,10 +37,10 @@ Liste ville_liste_initialiser();
 int ville_liste_vide(Liste tete);
 
 /* Inserer en queue pour garder l'ordre de la liste, comme une pile */
-Liste ville_liste_queueinserer(Liste tete, char v[], char c[]);
+Liste ville_liste_queueinserer(Liste tete, char*, char* c);
 
 /* Ajout d'un élément en tête de liste */
-Liste ville_liste_teteinserer(Liste tete, char v[], char c[]);
+Liste ville_liste_teteinserer(Liste tete, char* v, char* c);
 
 /* Suppression d'un élément en tête de liste */
 Liste ville_liste_tetesupprimer(Liste tete);
