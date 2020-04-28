@@ -4,7 +4,6 @@
 //une fonction qui multiplie son parametre x par n.
 
 
-
 function creerMultplicateur(n){
   return (x)=>(x*n);
 }
@@ -12,6 +11,8 @@ function creerMultplicateur(n){
 let multip= creerMultplicateur(2);
 multip(5);
 console.log(multip(5));
+console.log(miltip(3));
+console.log(miltip(10));
 
 //2. fonction creerSequence() qui resoit comme param
 // valeur d'increment step et retourne une fonction
@@ -23,7 +24,7 @@ function creerSequence(init, step){
 }
 let s= creerSequence(2, 1);
 console.log(s());
-console.log("on ajoute" + s());
+console.log(s());
 
 //X3. fonction qui permet de parcourir la
 //suite de fibonacci. Reçoit 2
@@ -34,20 +35,26 @@ console.log("on ajoute" + s());
 //un=un-1+un-2),
 
 function suiteFibonacci(i, i2){
-  let avant;
-  let suivant;
-  if(i>=1 && arguments.length<=2){
-    avant= (i-1)+(i-2);
-    i=i2;
-    i2=avant + i;
-    return i+i2;
-
+  let suivant
+  if(i==0){
+    return 1;
+  }else{
+    let temp=i;
+    let temp2=i2;
+    return ()=>{
+      let suivant= temp+temp2;
+      temp =i2;
+      temp2=suivant;
+      return suivant;
+    };
   }
 }
+let sf= suiteFibonacci(2,3)
+console.log(sf());
+console.log(sf());
 
 
-
-//4. modifier function creerMultplicateur()
+//4. modifier function creerMultplicateur(). Avec un seul param. 
 
 function modifCreerMultiplicateur(n, x){
 
@@ -62,6 +69,10 @@ function modifCreerMultiplicateur(n, x){
 }
 let modifCM= modifCreerMultiplicateur(6);
 console.log(modifCM(3));
+let modifCM1= modifCreerMultiplicateur(8);
+console.log(modifCM1(2));
+
+
 //5. modification sur le même principe la function power()
 //si reçoit 2 params n et x, elle retourne X^n, et si elle
 // reçoit 1 seul param n, elle retourne une fonction
@@ -79,6 +90,7 @@ function modifRecursifPower(n,x){
 }
 let mprr=modifRecursifPower(3);
 mprr(2);
+mprr(3);
 
 //6. fonction formatter() qui construit une fonction de
 // formatage de message en ajoutant un nº de message
@@ -91,6 +103,7 @@ function formatter(val){
 }
 var format=formatter(10);
 format(' ay pepito!');
+console.log(format('la mer est rouge'));
 
 //7. la fonction write() écrit le message
 function write($phrase){
@@ -102,7 +115,23 @@ function writeAlert(){
   let $msg;
   return $msg => console.log($msg);
 }
-let alert=writeAlert();
+write("hasta la vista baby")
 alert('julio');
+console.log(write("hasta la vista baby"));
 
-//8.
+
+//8.Fonction logger() qui reçoit en param. une fonction
+//formatage() et une fonction d'écriture de msgs. retourne
+// une fonction log qui reçoit un msg en param. le formate
+// el l'écrite avec les fonctions passées en param.
+
+function logger(funFormat, fWrite){
+  return($mess)=>(fWrite(funFormat($mess)));
+}
+let f=formatter(11);
+log= logger(f, alert);
+log(' hotdog')
+console.log(log(' hotdog'));
+let log= logger(f,write);
+log(' ohlala');
+console.log(log(' ohlala'));
